@@ -292,7 +292,9 @@ namespace XenAdmin.Controls.NetworkingTab
                     foreach (var vif in vifs)
                     {
                         var network = vif.Connection.Resolve(vif.network);
-                        if (network != null && network.IsGuestInstallerNetwork)
+                        if (network != null &&
+                            // CA-218956 - Expose HIMN when showing hidden objects
+                            (network.IsGuestInstallerNetwork && !XenAdmin.Properties.Settings.Default.ShowHiddenVMs))
                             continue;   // Don't show the guest installer network in the network tab (CA-73056)
                         vifRowsToAdd.Add(new VifRow(vif));
                     }
